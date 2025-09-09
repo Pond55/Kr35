@@ -3,52 +3,76 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Felles Aktivitetskalender — Firebase (anonym, delt)</title>
+<title>Kråberget 35</title>
 <style>
-  :root{--bg:#0b0f16;--panel:#12182a;--border:#232a3b;--muted:#8b95aa;--text:#e8edf6;--today:#ffd166;--accent:#4f8cff;--placeholder:#0c111c}
+  :root{
+    --bg:#0b0f16; --panel:#12182a; --border:#232a3b; --muted:#8b95aa; --text:#e8edf6;
+    --today:#ffd166; --accent:#4f8cff; --placeholder:#0c111c;
+  }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;display:flex;justify-content:center;padding:22px}
-  .app{width:min(1100px,100%);display:flex;flex-direction:column;gap:12px}
-  .toolbar{display:flex;gap:10px;align-items:center;justify-content:space-between;background:#0f1421;border:1px solid var(--border);border-radius:14px;padding:10px 12px}
-  .group{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-  .title{font-weight:800;font-size:18px;letter-spacing:.2px}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+    display:flex; justify-content:center; padding:22px;
+  }
+  .app{width:min(1100px,100%); display:flex; flex-direction:column; gap:12px}
+
+  /* Top */
+  .toolbar{display:flex; gap:10px; align-items:center; justify-content:space-between;
+    background:#0f1421; border:1px solid var(--border); border-radius:14px; padding:10px 12px}
+  .group{display:flex; gap:6px; flex-wrap:wrap; align-items:center}
+  .title{font-weight:800; font-size:18px}
   button,select,input[type=text]{background:#182034;color:var(--text);border:1px solid #2a3144;border-radius:10px;padding:7px 10px;height:36px}
-  button{cursor:pointer}button:hover{filter:brightness(1.08)}
+  button{cursor:pointer} button:hover{filter:brightness(1.08)}
   select{font-weight:600}
   .pill{background:#182034;border:1px solid #2a3144;border-radius:999px;padding:6px 10px;font-size:12px;color:var(--muted)}
-  .muted{color:var(--muted);font-size:13px}
-  .status{font-size:12px;color:var(--muted)}
 
-  .searchbar{display:flex;align-items:center;gap:8px;background:#0f1421;border:1px solid var(--border);border-radius:14px;padding:10px 12px}
+  /* Search */
+  .searchbar{display:flex; align-items:center; gap:8px; background:#0f1421; border:1px solid var(--border); border-radius:14px; padding:10px 12px}
   .searchbar input{width:min(420px,56vw)}
+  .muted{color:var(--muted); font-size:13px}
 
-  .calendar{background:var(--panel);border:1px solid var(--border);border-radius:16px;overflow:hidden}
-  .dow{display:grid;grid-template-columns:80px repeat(7,1fr);background:#12192a;border-bottom:1px solid var(--border)}
-  .dow div{padding:10px;text-align:center;font-weight:800;color:var(--muted);text-transform:uppercase;font-size:12px;letter-spacing:.08em}
-  .grid{display:grid;grid-auto-rows:130px}
-  .week{display:grid;grid-template-columns:80px repeat(7,1fr);border-bottom:1px solid var(--border)}
+  /* Calendar */
+  .calendar{background:var(--panel); border:1px solid var(--border); border-radius:16px; overflow:hidden}
+  .dow{display:grid; grid-template-columns:80px repeat(7,1fr); background:#12192a; border-bottom:1px solid var(--border)}
+  .dow div{padding:10px; text-align:center; font-weight:800; color:var(--muted); text-transform:uppercase; font-size:12px; letter-spacing:.08em}
+  .grid{display:grid; grid-auto-rows:130px}
+  .week{display:grid; grid-template-columns:80px repeat(7,1fr); border-bottom:1px solid var(--border)}
   .week:last-child{border-bottom:none}
-  .weeknum{display:flex;align-items:center;justify-content:center;background:#0f1524;color:#a9b2c7;font-weight:800;font-size:14px;border-right:1px solid var(--border);user-select:none}
+  .weeknum{display:flex; align-items:center; justify-content:center; background:#0f1524; color:#a9b2c7; font-weight:800; font-size:14px; border-right:1px solid var(--border); user-select:none}
 
-  .day{position:relative;border-right:1px solid var(--border);background:#0f1422;display:flex;flex-direction:column;transition:transform .18s ease,box-shadow .18s ease,z-index .18s ease,outline .18s ease}
+  .day{position:relative; border-right:1px solid var(--border); background:#0f1422; display:flex; flex-direction:column; transition:transform .18s ease, box-shadow .18s ease, z-index .18s ease, outline .18s ease}
   .day:last-child{border-right:none}
-  .day.placeholder{background:var(--placeholder);pointer-events:none;opacity:.55}
-  .date-badge{position:absolute;top:6px;right:8px;font-weight:800;font-size:12px;color:#a9b2c7;background:#0e1320;border:1px solid var(--border);border-radius:8px;padding:3px 6px;user-select:none}
-  .today .date-badge{background:var(--today);color:#111;border-color:#e5c24d}
-  .note{margin:24px 8px 8px 8px;flex:1;padding:8px;border:1px dashed #2b3550;border-radius:10px;outline:none;overflow:auto;white-space:pre-wrap;background:#0e1320;font-size:14px;line-height:1.35;pointer-events:none}
+  .day.placeholder{background:var(--placeholder); pointer-events:none; opacity:.55}
+
+  .date-badge{position:absolute; top:6px; right:8px; font-weight:800; font-size:12px;
+    color:#a9b2c7; background:#0e1320; border:1px solid var(--border); border-radius:8px; padding:3px 6px; user-select:none}
+  .today .date-badge{background:var(--today); color:#111; border-color:#e5c24d}
+
+  .note{margin:24px 8px 8px 8px; flex:1; padding:8px; border:1px dashed #2b3550; border-radius:10px;
+    outline:none; overflow:auto; white-space:pre-wrap; background:#0e1320; font-size:14px; line-height:1.35; pointer-events:none}
   .day:hover .note{border-color:#3a4666}
 
-  .day.match{outline:2px solid var(--accent);outline-offset:-2px}
-  .day.current-match{animation:pulse 1.2s ease}
-  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(79,140,255,.6)}100%{box-shadow:0 0 0 18px rgba(79,140,255,0)}}
+  /* Search highlighting */
+  .day.match{outline:2px solid var(--accent); outline-offset:-2px}
   .day.nonmatch{visibility:hidden}
 
-  .day.expanded{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(720px,92vw);height:min(70vh,820px);z-index:1000;box-shadow:0 20px 60px rgba(0,0,0,.55);border:1px solid #3a4768;outline:none}
-  .day.expanded .note{pointer-events:auto;border-style:solid;font-size:16px}
-  .backdrop{position:fixed;inset:0;background:rgba(5,8,14,.6);z-index:900;display:none}
+  /* Expanded editor */
+  .day.expanded{position:fixed; left:50%; top:50%; transform:translate(-50%,-50%);
+    width:min(720px,92vw); height:min(70vh,820px); z-index:1000; box-shadow:0 20px 60px rgba(0,0,0,.55); border:1px solid #3a4768; outline:none}
+  .day.expanded .note{pointer-events:auto; border-style:solid; font-size:16px}
+
+  /* Close button for mobile/desktop */
+  .close-btn{
+    position:absolute; left:8px; top:6px; display:none;
+    background:#1e2840; border:1px solid #40507b; color:#e8edf6;
+    border-radius:999px; padding:6px 10px; font-size:12px; font-weight:700;
+  }
+  .day.expanded .close-btn{display:inline-block}
+  .backdrop{position:fixed; inset:0; background:rgba(5,8,14,.6); z-index:900; display:none}
   .backdrop.show{display:block}
 
-  @media (max-width:750px){.grid{grid-auto-rows:110px}.weeknum{font-size:12px}}
+  @media (max-width:750px){ .grid{grid-auto-rows:110px} .weeknum{font-size:12px} }
 </style>
 </head>
 <body>
@@ -79,7 +103,6 @@
       <input id="showOnlyHits" type="checkbox" /> Vis bare treff (i denne måneden)
     </label>
     <span id="hitInfo" class="muted">0 treff</span>
-    <span class="status" id="status">Klar</span>
   </div>
 
   <div class="calendar">
@@ -90,18 +113,18 @@
 
 <div class="backdrop" id="backdrop" aria-hidden="true"></div>
 
-<!-- Firebase v12.2.1 -->
+<!-- Firebase v12.2.1 (Anonymous Auth + Realtime DB) -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
   import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
   import { getDatabase, ref, onValue, set, remove } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
 
-  /* --- Shared calendar id from URL (?cal=...) --- */
+  /* ---- Shared calendar id via ?cal=  ---- */
   const rawId = new URLSearchParams(location.search).get('cal') || 'felles';
   const CAL_ID = rawId.toLowerCase().replace(/[^a-z0-9_-]/g,'').slice(0,40) || 'felles';
   document.getElementById('calIdLabel').textContent = CAL_ID;
 
-  /* --- Your Firebase project --- */
+  /* ---- Your Firebase config ---- */
   const firebaseConfig = {
     apiKey: "AIzaSyAI023f2ceRUDl7Gyz7onOyEZPaxQG_G5c",
     authDomain: "fir-calendar-bda1d.firebaseapp.com",
@@ -112,92 +135,158 @@
     databaseURL: "https://fir-calendar-bda1d-default-rtdb.europe-west1.firebasedatabase.app"
   };
 
-  /* --- Safe helpers --- */
-  const NB='nb-NO', $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
-  const setStatus = (t)=>{ const el=$("#status"); if(el) el.textContent = t; };
-  const pad2=n=>String(n).padStart(2,'0'), ymd=d=>`${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
-  function isoWeek(date){const d=new Date(Date.UTC(date.getFullYear(),date.getMonth(),date.getDate()));const dn=(d.getUTCDay()||7);d.setUTCDate(d.getUTCDate()+4-dn);const yStart=new Date(Date.UTC(d.getUTCFullYear(),0,1));return Math.ceil((((d-yStart)/86400000)+1)/7);}
-  const mondayOnOrBefore=d=>{const x=new Date(d);const k=(x.getDay()+6)%7;x.setDate(x.getDate()-k);return x;};
-  const addDays=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x;};
-  function renderDOW(){ $("#dow").innerHTML=['UKE','MAN','TIR','ONS','TOR','FRE','LØR','SØN'].map(n=>`<div>${n}</div>`).join(''); }
-
-  const monthSelect=$("#monthSelect"), yearSelect=$("#yearSelect");
-  function populatePickers(view){
-    if(!monthSelect || !yearSelect) return;
-    monthSelect.innerHTML=''; for(let m=0;m<12;m++){const name=new Date(2025,m,1).toLocaleDateString(NB,{month:'long'});monthSelect.insertAdjacentHTML('beforeend',`<option value="${m}">${name.charAt(0).toUpperCase()+name.slice(1)}</option>`);} monthSelect.value=view.getMonth();
-    yearSelect.innerHTML=''; for(let y=view.getFullYear()-60;y<=view.getFullYear()+60;y++){yearSelect.insertAdjacentHTML('beforeend',`<option value="${y}">${y}</option>`);} yearSelect.value=view.getFullYear();
-  }
-
-  /* --- App state (shared) --- */
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db   = getDatabase(app);
 
-  let notesCache = {};        // {"YYYY-MM-DD":"text"}
-  let currentQuery='', globalHits=[], hitIndex=-1;
-  let expandedCell=null;
+  /* ---------- Helpers ---------- */
+  const NB='nb-NO', $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+  const pad2=n=>String(n).padStart(2,'0'), ymd=d=>`${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
+  function isoWeek(date){const d=new Date(Date.UTC(date.getFullYear(),date.getMonth(),date.getDate()));const dn=(d.getUTCDay()||7);d.setUTCDate(d.getUTCDate()+4-dn);const yStart=new Date(Date.UTC(d.getUTCFullYear(),0,1));return Math.ceil((((d-yStart)/86400000)+1)/7);}
+  const mondayOnOrBefore=(date)=>{const d=new Date(date); const delta=(d.getDay()+6)%7; d.setDate(d.getDate()-delta); return d;};
+  const addDays=(date,n)=>{const d=new Date(date); d.setDate(d.getDate()+n); return d;};
+  function renderDOW(){ $("#dow").innerHTML=['UKE','MAN','TIR','ONS','TOR','FRE','LØR','SØN'].map(n=>`<div>${n}</div>`).join(''); }
 
-  function rebuildGlobalHits(){ const q=currentQuery.toLowerCase(); globalHits=[]; if(!q){hitIndex=-1; $("#hitInfo").textContent='0 treff'; return;} for(const [k,v] of Object.entries(notesCache)){ if((v||'').toLowerCase().includes(q)) globalHits.push(k); } globalHits.sort(); hitIndex=globalHits.length?0:-1; $("#hitInfo").textContent=`${globalHits.length} treff`; }
-  function applyOnlyHitsFilter(){ const only=$("#showOnlyHits").checked && !!currentQuery; $$('#grid .day').forEach(el=>el.classList.remove('nonmatch')); if(!only) return; const q=currentQuery.toLowerCase(); $$('#grid .week').forEach(week=>{ const cells=Array.from(week.children).slice(1); cells.forEach(cell=>{ if(!cell.classList.contains('day')) return; if(cell.classList.contains('placeholder')) return; const key=cell.dataset.key, txt=notesCache[key]||''; cell.classList.toggle('nonmatch', !txt.toLowerCase().includes(q)); }); }); }
-  function markMatchesInCurrentMonth(keep=false){ const q=currentQuery.toLowerCase(); $$('#grid .day:not(.placeholder)').forEach(el=>{ const key=el.dataset.key, txt=notesCache[key]||''; const m=q && txt.toLowerCase().includes(q); el.classList.toggle('match', !!m); if(!keep) el.classList.remove('current-match'); }); }
-
-  let view=new Date();
-  function render(){
-    try{
-      const monthName=view.toLocaleDateString(NB,{month:'long'});
-      const title=$("#title"); if(title) title.textContent=`${monthName.charAt(0).toUpperCase()+monthName.slice(1)} ${view.getFullYear()}`;
-      populatePickers(view);
-
-      const first=new Date(view.getFullYear(),view.getMonth(),1);
-      const last =new Date(view.getFullYear(),view.getMonth()+1,0);
-      const grid=$("#grid"); if(!grid) return; grid.innerHTML='';
-
-      for(let wkStart=mondayOnOrBefore(first); wkStart<=last; wkStart=addDays(wkStart,7)){
-        let any=false; for(let i=0;i<7;i++){ const d=addDays(wkStart,i); if(d.getMonth()===view.getMonth()){ any=true; break; } }
-        if(!any) continue;
-
-        const row=document.createElement('div'); row.className='week';
-        const wn=document.createElement('div'); wn.className='weeknum'; wn.textContent=isoWeek(wkStart); row.appendChild(wn);
-
-        for(let i=0;i<7;i++){
-          const d=addDays(wkStart,i), inMonth=d.getMonth()===view.getMonth();
-          const cell=document.createElement('div'); cell.className='day'+(inMonth?'':' placeholder');
-          const badge=document.createElement('div'); badge.className='date-badge'; badge.textContent=d.getDate(); cell.appendChild(badge);
-
-          if(inMonth){
-            const today=new Date(); if(d.toDateString()===today.toDateString()) cell.classList.add('today');
-            const note=document.createElement('div'); note.className='note'; note.contentEditable='false';
-            const key=ymd(d); cell.dataset.key=key; if(notesCache[key]) note.textContent=notesCache[key];
-
-            const doSave=()=>{ const txt=note.innerText.trim(); try{ if(txt){ notesCache[key]=note.innerText; set(ref(db,`shared/${CAL_ID}/notes/${key}`), note.innerText); } else { delete notesCache[key]; remove(ref(db,`shared/${CAL_ID}/notes/${key}`)); } rebuildGlobalHits(); markMatchesInCurrentMonth(true); }catch(e){ console.error(e); setStatus('Lagring feilet'); } };
-            note.addEventListener('input', ()=>{ clearTimeout(note._t); note._t=setTimeout(doSave,300); });
-            note.addEventListener('blur', doSave);
-
-            cell.addEventListener('click', ()=>{ if(!cell.classList.contains('expanded')){ $("#backdrop").classList.add('show'); cell.classList.add('expanded'); note.contentEditable='true'; expandedCell=cell; setTimeout(()=>note.focus(),0);} });
-            cell.addEventListener('contextmenu', e=>{ e.preventDefault(); if(cell.classList.contains('expanded')){ const key=cell.dataset.key; const txt=note.innerText.trim(); try{ if(txt){ notesCache[key]=note.innerText; set(ref(db,`shared/${CAL_ID}/notes/${key}`), note.innerText);} else { delete notesCache[key]; remove(ref(db,`shared/${CAL_ID}/notes/${key}`)); } rebuildGlobalHits(); }catch(err){ console.error(err); setStatus('Lagring feilet'); } note.blur(); note.contentEditable='false'; cell.classList.remove('expanded'); $("#backdrop").classList.remove('show'); expandedCell=null; } });
-
-            cell.appendChild(note);
-          }
-          row.appendChild(cell);
-        }
-        grid.appendChild(row);
-      }
-
-      if(currentQuery){ markMatchesInCurrentMonth(true); applyOnlyHitsFilter(); }
-    }catch(err){
-      console.error('Render error:', err);
-      setStatus('Feil i visning (se konsoll)');
+  const monthSelect=$("#monthSelect"), yearSelect=$("#yearSelect");
+  function populatePickers(view){
+    monthSelect.innerHTML='';
+    for(let m=0;m<12;m++){
+      const name=new Date(2025,m,1).toLocaleDateString(NB,{month:'long'});
+      monthSelect.insertAdjacentHTML('beforeend', `<option value="${m}">${name.charAt(0).toUpperCase()+name.slice(1)}</option>`);
     }
+    monthSelect.value=view.getMonth();
+    yearSelect.innerHTML='';
+    for(let y=view.getFullYear()-60;y<=view.getFullYear()+60;y++){
+      yearSelect.insertAdjacentHTML('beforeend', `<option value="${y}">${y}</option>`);
+    }
+    yearSelect.value=view.getFullYear();
   }
 
+  /* ---------- State ---------- */
+  let notesCache = {}; // {"YYYY-MM-DD": "text"}
+  let currentQuery = '', globalHits = [], hitIndex = -1;
+  let expandedCell = null;
+
+  function rebuildGlobalHits(){
+    const q=currentQuery.toLowerCase(); globalHits=[];
+    if(!q){ hitIndex=-1; $("#hitInfo").textContent='0 treff'; return; }
+    for(const [k,v] of Object.entries(notesCache)){ if((v||'').toLowerCase().includes(q)) globalHits.push(k); }
+    globalHits.sort(); hitIndex = globalHits.length ? 0 : -1;
+    $("#hitInfo").textContent = `${globalHits.length} treff`;
+  }
+  function applyOnlyHitsFilter(){
+    const only=$("#showOnlyHits").checked && !!currentQuery;
+    $$('#grid .day').forEach(el=>el.classList.remove('nonmatch'));
+    if(!only) return;
+    const q=currentQuery.toLowerCase();
+    $$('#grid .week').forEach(week=>{
+      const cells=Array.from(week.children).slice(1);
+      cells.forEach(cell=>{
+        if(!cell.classList.contains('day')) return;
+        if(cell.classList.contains('placeholder')) return;
+        const key=cell.dataset.key, txt=notesCache[key]||'';
+        cell.classList.toggle('nonmatch', !txt.toLowerCase().includes(q));
+      });
+    });
+  }
+  function markMatchesInCurrentMonth(){
+    const q=currentQuery.toLowerCase();
+    $$('#grid .day:not(.placeholder)').forEach(el=>{
+      const key=el.dataset.key, txt=notesCache[key]||'';
+      el.classList.toggle('match', q && txt.toLowerCase().includes(q));
+    });
+  }
+
+  /* ---------- Render month ---------- */
+  let view=new Date();
+  function render(){
+    const monthName=view.toLocaleDateString(NB,{month:'long'});
+    $("#title").textContent=`${monthName.charAt(0).toUpperCase()+monthName.slice(1)} ${view.getFullYear()}`;
+    populatePickers(view);
+
+    const first=new Date(view.getFullYear(),view.getMonth(),1);
+    const last =new Date(view.getFullYear(),view.getMonth()+1,0);
+    const grid=$("#grid"); grid.innerHTML='';
+
+    for(let wkStart=mondayOnOrBefore(first); wkStart<=last; wkStart=addDays(wkStart,7)){
+      let any=false; for(let i=0;i<7;i++){ const d=addDays(wkStart,i); if(d.getMonth()===view.getMonth()){ any=true; break; } }
+      if(!any) continue;
+
+      const row=document.createElement('div'); row.className='week';
+      const wn=document.createElement('div'); wn.className='weeknum'; wn.textContent=isoWeek(wkStart); row.appendChild(wn);
+
+      for(let i=0;i<7;i++){
+        const d=addDays(wkStart,i);
+        const isInMonth=d.getMonth()===view.getMonth();
+        const cell=document.createElement('div'); cell.className='day'+(isInMonth?'':' placeholder');
+
+        const badge=document.createElement('div'); badge.className='date-badge'; badge.textContent=d.getDate(); cell.appendChild(badge);
+
+        if(isInMonth){
+          const today=new Date(); if(d.toDateString()===today.toDateString()) cell.classList.add('today');
+
+          // Close button (visible only when expanded)
+          const close=document.createElement('button');
+          close.className='close-btn'; close.type='button'; close.setAttribute('aria-label','Lukk'); close.textContent='× Lukk';
+
+          const note=document.createElement('div'); note.className='note'; note.contentEditable='false';
+          const key=ymd(d); cell.dataset.key=key; if(notesCache[key]) note.textContent=notesCache[key];
+
+          const doSave=()=>{
+            const txt=note.innerText.trim();
+            if(txt){ notesCache[key]=note.innerText; set(ref(db,`shared/${CAL_ID}/notes/${key}`), note.innerText); }
+            else   { delete notesCache[key]; remove(ref(db,`shared/${CAL_ID}/notes/${key}`)); }
+            rebuildGlobalHits(); markMatchesInCurrentMonth();
+          };
+          note.addEventListener('input', ()=>{ clearTimeout(note._t); note._t=setTimeout(doSave,300); });
+          note.addEventListener('blur', doSave);
+
+          // Open (tap/click)
+          cell.addEventListener('click', (e)=>{
+            if(cell.classList.contains('expanded')) return;
+            $("#backdrop").classList.add('show');
+            cell.classList.add('expanded');
+            note.contentEditable='true';
+            expandedCell=cell;
+            setTimeout(()=>note.focus(),0);
+          });
+
+          // Close with the close button (mobile-friendly)
+          close.addEventListener('click', (e)=>{
+            e.stopPropagation();
+            const txt=note.innerText.trim();
+            if(txt){ notesCache[key]=note.innerText; set(ref(db,`shared/${CAL_ID}/notes/${key}`), note.innerText); }
+            else   { delete notesCache[key]; remove(ref(db,`shared/${CAL_ID}/notes/${key}`)); }
+            note.blur(); note.contentEditable='false';
+            cell.classList.remove('expanded'); $("#backdrop").classList.remove('show'); expandedCell=null;
+          });
+
+          // Still support right-click on desktop
+          cell.addEventListener('contextmenu', e=>{
+            e.preventDefault();
+            if(!cell.classList.contains('expanded')) return;
+            close.click();
+          });
+
+          cell.appendChild(close);
+          cell.appendChild(note);
+        }
+        row.appendChild(cell);
+      }
+      grid.appendChild(row);
+    }
+    if(currentQuery){ markMatchesInCurrentMonth(); applyOnlyHitsFilter(); }
+  }
+
+  // Update visible notes without rebuilding (keeps editor open)
   function refreshVisibleNotes(){
     $$('#grid .day:not(.placeholder)').forEach(el=>{
       if(el===expandedCell) return;
       const key=el.dataset.key, noteEl=el.querySelector('.note');
-      const txt=notesCache[key]||'';
-      if(noteEl && noteEl.innerText!==txt) noteEl.textContent=txt;
+      const txt = notesCache[key] || '';
+      if(noteEl && noteEl.innerText !== txt) noteEl.textContent = txt;
     });
-    if(currentQuery){ markMatchesInCurrentMonth(true); applyOnlyHitsFilter(); }
+    if(currentQuery){ markMatchesInCurrentMonth(); applyOnlyHitsFilter(); }
   }
 
   // Navigation
@@ -213,28 +302,28 @@
   $("#showOnlyHits").addEventListener('change', applyOnlyHitsFilter);
   $("#prevHitBtn").addEventListener('click', ()=>{ if(!globalHits.length) return; hitIndex=(hitIndex-1+globalHits.length)%globalHits.length; gotoKey(globalHits[hitIndex]); });
   $("#nextHitBtn").addEventListener('click', ()=>{ if(!globalHits.length) return; hitIndex=(hitIndex+1)%globalHits.length; gotoKey(globalHits[hitIndex]); });
-  function gotoKey(key){ const [Y,M]=key.split('-').map(n=>parseInt(n,10)); view=new Date(Y,M-1,1); render(); applyOnlyHitsFilter(); const cell=document.querySelector(`.day[data-key="${key}"]`); if(cell){ $$('#grid .day').forEach(el=>el.classList.remove('current-match')); cell.classList.add('current-match','match'); cell.scrollIntoView({behavior:'smooth',block:'center',inline:'center'}); } }
-  $("#copyLinkBtn").addEventListener('click', async ()=>{ const url=`${location.origin}${location.pathname}?cal=${encodeURIComponent(CAL_ID)}`; try{ await navigator.clipboard.writeText(url); alert('Lenke kopiert!'); }catch{ prompt('Kopiér lenke:', url); } });
+  function gotoKey(key){ const [Y,M]=key.split('-').map(n=>parseInt(n,10)); view=new Date(Y,M-1,1); render(); applyOnlyHitsFilter(); const cell=document.querySelector(`.day[data-key="${key}"]`); if(cell){ $$('#grid .day').forEach(el=>el.classList.remove('current-match')); cell.classList.add('current-match','match'); cell.scrollIntoView({behavior:'smooth',block:'center'}); } }
 
-  // Init UI first (even if Firebase fails)
+  // Copy share link
+  $("#copyLinkBtn").addEventListener('click', async ()=>{
+    const url = `${location.origin}${location.pathname}?cal=${encodeURIComponent(CAL_ID)}`;
+    try{ await navigator.clipboard.writeText(url); alert('Lenke kopiert!'); }catch{ prompt('Kopiér lenke:', url); }
+  });
+
+  // Init UI
   renderDOW(); render();
 
-  // Connect to Firebase (with robust status + error handling)
-  setStatus('Kobler til…');
-  signInAnonymously(getAuth()).catch(e=>{ console.warn(e); setStatus('Kunne ikke logge inn anonymt'); });
-
-  onAuthStateChanged(getAuth(), ()=>{
-    try{
-      setStatus('Tilkoblet');
-      const path = `shared/${CAL_ID}/notes`;
-      onValue(ref(getDatabase(), path),
-        (snap)=>{ notesCache=snap.val()||{}; rebuildGlobalHits(); refreshVisibleNotes(); },
-        (err)=>{ console.error('onValue error:', err); setStatus('DB-regler blokkerer eller nettfeil'); }
-      );
-    }catch(e){
-      console.error('Listener setup error:', e);
-      setStatus('DB-feil (se konsoll)');
-    }
+  // Firebase (anonymous, no prompt). Requires rules:
+  // {
+  //   "rules": { "shared": { "$calId": { ".read": "auth != null", ".write": "auth != null" } } }
+  // }
+  signInAnonymously(auth).catch(e=>console.warn('Enable Anonymous in Firebase Authentication.', e));
+  onAuthStateChanged(auth, ()=>{
+    onValue(ref(db,`shared/${CAL_ID}/notes`),(snap)=>{
+      notesCache=snap.val()||{};
+      rebuildGlobalHits();
+      refreshVisibleNotes();
+    }, (err)=>console.error('DB error:', err));
   });
 </script>
 </body>
